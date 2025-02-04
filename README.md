@@ -35,7 +35,7 @@ plot_materialSiD()
 ```
 root
 .L LoadAll.c
-LoadAll()
+LoadAll("")
 
 .L CompGeom.c
 
@@ -44,7 +44,7 @@ LoadAll()
 
 CompGeom(45, 
          "GeoIDEA_BASE", "GeoCLD", "GeoSiD",  // geometry file names (without .txt)
-         "IDEA", "CLD", "SiD",                 // detector names
+         "IDEA", "CLD", "SiD",                 // detector names for plots
          2.0, 2.0, 5.0);                       // magnetic fields
 
 

@@ -41,7 +41,8 @@ void CompGeom(Double_t Ang,
     TString filename1;
     filename1.Form("geometry_files/%s.txt", geom_file1);
     SolGeom *Gdet1;            
-    Gdet1 = new SolGeom(filename1.Data(), B_field1);    
+    char* fname1 = const_cast<char*>(filename1.Data());
+    Gdet1 = new SolGeom(fname1, B_field1);     
     Gdet1->Draw();            
     TCanvas *cc_det1 = Gdet1->cnv();                    
     cc_det1->cd(1);
@@ -59,7 +60,8 @@ void CompGeom(Double_t Ang,
     TString filename2;
     filename2.Form("geometry_files/%s.txt", geom_file2);
     SolGeom *Gdet2;            
-    Gdet2 = new SolGeom(filename2.Data(), B_field2);    
+    char* fname2 = const_cast<char*>(filename2.Data());
+    Gdet2 = new SolGeom(fname2, B_field2); 
     Gdet2->Draw();            
     TCanvas *cc_det2 = Gdet2->cnv();
     cc_det2->cd(1);
@@ -78,7 +80,8 @@ void CompGeom(Double_t Ang,
     TString filename3;
     filename3.Form("geometry_files/%s.txt", geom_file3);
     SolGeom *Gdet3;            
-    Gdet3 = new SolGeom(filename3.Data(), B_field3);    
+    char* fname3 = const_cast<char*>(filename3.Data());
+    Gdet3 = new SolGeom(fname3, B_field3);   
     Gdet3->Draw();            
     TCanvas *cc_det3 = Gdet3->cnv();
     cc_det3->cd(1);
@@ -409,9 +412,9 @@ void CompGeom(Double_t Ang,
 	grptms_det2->Draw("SAME");
 	// SiD
 	grpt_det3->Draw("SAME");
+	grptms_det3->Draw("SAME");
 	// IDEA
-	TGraph *grpt_det1 = new TGraph(Npt, pt, spt_det1);			// pt resolution
-	grpt_det1->SetLineColor(kBlue);
+	ßgrpt_det1->SetLineColor(kBlue);
 	grpt_det1->SetLineStyle(2);
 	grpt_det1->SetMarkerColor(kBlue);
 	grpt_det1->SetTitle("#sigma_{pt}/pt");
@@ -419,6 +422,8 @@ void CompGeom(Double_t Ang,
 	grpt_det1->GetXaxis()->SetTitle("pt (GeV)");
 	grpt_det1->Draw("SAME");
 	grptms_det1->Draw("SAME");
+
+ß
 
 
 	TLegend *lgpt1 = new TLegend(0.2, 0.9, 0.6, 0.70);
