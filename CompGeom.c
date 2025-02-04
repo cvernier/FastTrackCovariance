@@ -436,9 +436,7 @@ void CompGeom(Double_t Ang,
 	lgpt1->AddEntry(grptms_det3, det_name3, "L");
 	lgpt1->Draw();
 
-    TCanvas *resolp = new TCanvas("resolp", "Comparison of pt resolutions", 50, 50, 500, 500);
-    // [Rest of the pt resolution plotting code remains similar, just update names]
-    
+
     TString filenamep;
     filenamep.Form("plot_dump/%s_%s_%s_resolution_tracking_pt_%d.pdf", 
                    det_name1, det_name2, det_name3, iang);
