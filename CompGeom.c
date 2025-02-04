@@ -414,7 +414,7 @@ void CompGeom(Double_t Ang,
 	grpt_det3->Draw("SAME");
 	grptms_det3->Draw("SAME");
 	// IDEA
-	ßgrpt_det1->SetLineColor(kBlue);
+	grpt_det1->SetLineColor(kBlue);
 	grpt_det1->SetLineStyle(2);
 	grpt_det1->SetMarkerColor(kBlue);
 	grpt_det1->SetTitle("#sigma_{pt}/pt");
@@ -423,7 +423,7 @@ void CompGeom(Double_t Ang,
 	grpt_det1->Draw("SAME");
 	grptms_det1->Draw("SAME");
 
-ß
+
 
 
 	TLegend *lgpt1 = new TLegend(0.2, 0.9, 0.6, 0.70);
