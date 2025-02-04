@@ -257,7 +257,7 @@ void CompGeom(Double_t Ang,
 	grptms_det2->SetMinimum(0.0);
 	grptms_det2->GetXaxis()->SetTitle("pt (GeV)");
 	grptms_det2->Draw("SAME");
-	//SiD
+	//det3
 	grpt_det3 = new TGraph(Npt, pt, spt_det3);			// pt resolution
 	grpt_det3->SetLineColor(kGreen);
 	grpt_det3->SetMarkerColor(kGreen);
@@ -414,12 +414,6 @@ void CompGeom(Double_t Ang,
 	grpt_det3->Draw("SAME");
 	grptms_det3->Draw("SAME");
 	// IDEA
-	grpt_det1->SetLineColor(kBlue);
-	grpt_det1->SetLineStyle(2);
-	grpt_det1->SetMarkerColor(kBlue);
-	grpt_det1->SetTitle("#sigma_{pt}/pt");
-	grpt_det1->SetMinimum(0.0);
-	grpt_det1->GetXaxis()->SetTitle("pt (GeV)");
 	grpt_det1->Draw("SAME");
 	grptms_det1->Draw("SAME");
 
