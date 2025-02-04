@@ -1,11 +1,4 @@
 
-```
-./compile.x ; ./example.exe
-
-
-./compile_vtx.sh; ./example_vtx.exe
-```
-
 # Create and draw geometry description for SiD:
 
 ```
@@ -35,7 +28,7 @@ plot_materialSiD()
 ```
 root
 .L LoadAll.c
-LoadAll("IDEA")
+LoadAll()
 
 .L CompGeom.c
 CompGeom(50)  //50 deg is the track angle
