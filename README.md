@@ -16,6 +16,9 @@ SolGeom solGeomObj
 solGeomObj.GeoPrint("GeoSiD.txt")
 solGeomObj.Draw()
 
+# Open the txt file (located in geometry_scripts/, inspect it and modify as necessary, e.g. if you want to remove some parts)
+# !!! Then, make sure to move it to geometry_files/ ! This is where it will be read from when running the CompGeom scripts!
+
 ```
 
 # Print SiD material budget
