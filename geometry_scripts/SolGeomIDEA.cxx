@@ -131,8 +131,8 @@ void SolGeom::SolGeoFill()
 		fLyLabl[fNlay] = "PIPE";
 		fxMin[fNlay] = -100.;		// Minimum dimension z for barrel  or R for forward
 		fxMax[fNlay] = 100.;		// Maximum dimension z for barrel  or R for forward
-		frPos[fNlay] = 0.015;		// R/z location of layer
-		fthLay[fNlay] = 0.0012;		// Thickness (meters)
+		frPos[fNlay] = 0.01;		// R/z location of layer
+		fthLay[fNlay] = 0.00235;		// Thickness (meters)
 		frlLay[fNlay] = 35.276e-2;	// Radiation length (meters)
 		fnmLay[fNlay] = 0;			// Number of measurements in layers (1D or 2D)
 		fstLayU[fNlay] = 0;			// Stereo angle (rad) - 0(pi/2) = axial(z) layer - Upper side
@@ -143,12 +143,12 @@ void SolGeom::SolGeoFill()
 		fNlay++; fBlay++;
 	}
 	//
-	// Vertex  detector (inner)
+	// Vertex  detector (inner) // latest from https://github.com/delphes/delphes/blob/master/cards/delphes_card_IDEA.tcl#L227
 	if (fEnable[1])
 	{
 		const Int_t NlVtx = 3;	// Assume 3 vertex pixel layers
-		Double_t rVtx[NlVtx] = { 1.7, 2.3, 3.1 };		// Vertex layer radii in cm
-		Double_t lVtx[NlVtx] = { 12.0, 16.0, 16.0 };		// Vertex layer half length in cm
+		Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };		// Vertex layer radii in cm
+		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in cm
 		for (Int_t i = 0; i < NlVtx; i++)
 		{
 			ftyLay[fNlay] = 1;					// Layer type 1 = R (barrel) or 2 = z (forward/backward)
@@ -173,8 +173,8 @@ void SolGeom::SolGeoFill()
 	if (fEnable[2])
 	{
 		const Int_t NlVtxo = 2;	// Assume 2 vertex strip layers
-		Double_t rVtxo[NlVtxo] = { 32., 34. };			// Vertex layer radii in cm
-		Double_t lVtxo[NlVtxo] = { 100., 105 };		// Vertex layer half length in cm
+		Double_t rVtxo[NlVtxo] = { 14., 31.5 };			// Vertex layer radii in cm
+		Double_t lVtxo[NlVtxo] = { 16.31, 32.63 };		// Vertex layer half length in cm
 		for (Int_t i = 0; i < NlVtxo; i++)
 		{
 			ftyLay[fNlay] = 1;					// Layer type 1 = R (barrel) or 2 = z (forward/backward)
@@ -337,16 +337,16 @@ void SolGeom::SolGeoFill()
 	// Vertex disks
 	if (fEnable[6])
 	{
-		const Int_t NlVtxd = 8;							// Assume 8 pixel disk layers
-		Double_t zVtxd[NlVtxd] = { -92., -90., -42., -40., 40., 42., 90., 92. };		// z location in cm
-		Double_t rinVtxd[NlVtxd] = { 14.1, 13.8, 6.5, 6.2, 6.2, 6.5, 13.8, 14.1 };      // Lower radius in cm
-		Double_t rotVtxd = 30.0;			// Outer radius in cm
+		const Int_t NlVtxd = 6;							// Assume 8 pixel disk layers
+		Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
+		Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
+		Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
 		for (Int_t i = 0; i < NlVtxd; i++)
 		{
 			ftyLay[fNlay] = 2;					// Layer type 1 = R (barrel) or 2 = z (forward/backward
 			fLyLabl[fNlay] = "VTXDSK";			// Layer label
 			fxMin[fNlay] = rinVtxd[i] * 1.e-2;	// Minimum dimension z for barrel  or R for forward
-			fxMax[fNlay] = rotVtxd * 1.e-2;	// Maximum dimension z for barrel  or R for forward
+			fxMax[fNlay] = rotVtxd[i] * 1.e-2;	// Maximum dimension z for barrel  or R for forward
 			frPos[fNlay] = zVtxd[i] * 1.e-2;	// R/z location of layer
 			fthLay[fNlay] = 280.E-6;			// Thickness (meters)
 			frlLay[fNlay] = 9.370e-2;			// Radiation length (meters)
