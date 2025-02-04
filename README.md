@@ -6,6 +6,10 @@ cd geometry_scripts
 root
 
 
+# SolGeomSiD.cxx (or the one for IDEA or CLD should be your starting point)
+# Modify the geometry therein as needed and print the txt file with the desired name
+# You will use that txt file later to compare the resolutions for different detectors in CompGeom
+
 .L SolGeomSiD.cxx
 SolGeom()
 SolGeom solGeomObj
@@ -31,6 +35,14 @@ root
 LoadAll()
 
 .L CompGeom.c
-CompGeom(50)  //50 deg is the track angle
+
+# Now call CompGeom as in this example: 
+
+
+CompGeom(45, 
+         "GeoIDEA_BASE", "GeoCLD", "GeoSiD",  // geometry file names (without .txt)
+         "IDEA", "CLD", "SiD",                 // detector names
+         2.0, 2.0, 5.0);                       // magnetic fields
+
 
 ```
