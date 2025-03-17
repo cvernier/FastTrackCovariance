@@ -47,6 +47,7 @@ private:
 	Double_t StereoHyp(Double_t *x, Double_t *p);
 	void SolGeoInit();
 	void SolGeoFill();
+        void GetVertexDiskRadii(Double_t z, Double_t &rin, Double_t &rout);
 	void GeoRead(char *fname, double B);
 public:
 	//
