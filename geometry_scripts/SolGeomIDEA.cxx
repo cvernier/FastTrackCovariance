@@ -8,6 +8,7 @@
 #include <TF1.h>
 #include <TString.h>
 #include "SolGeom.h"
+#include <cmath>
 #include "../trkcovariance_scripts/SolTrack.h"
 
 using namespace std;
@@ -24,28 +25,46 @@ void SolGeom::GetVertexDiskRadii(Double_t z, Double_t &rin, Double_t &rout)
     // Safety margin to ensure detector doesn't overlap with beam pipe
     const Double_t safety_margin = 0.3; // 3 mm clearance from the beam pipe
 
-    // Default outer radius (can be adjusted if needed)
-    const Double_t default_rout = 31.5;
+    // Outer radius options
+    const Double_t rout_large = 31.5; // in cm
+    const Double_t rout_small = 27.5; // in cm
 
     Double_t z_abs = TMath::Abs(z); // Consider symmetry in z
     Double_t beamPipeRadius = 0.;
-    
+
+     // Using the specified angle of 0.105 radians
+    // rin = z * tan(angle)
+    if (z_abs < 40. ) rin = tan(0.124) * z_abs;
+    else rin = tan(0.114) * z_abs;
+   
     if (z_abs >= z_min && z_abs <= z_max)
     {
         // Compute beam pipe radius using linear interpolation
-        Double_t beamPipeRadius = r_min + (r_max - r_min) * (z_abs - z_min) / (z_max - z_min);
+        beamPipeRadius = r_min + (r_max - r_min) * (z_abs - z_min) / (z_max - z_min);
 
-        // Set rinVtxd larger than beam pipe radius + safety margin
-        rin = beamPipeRadius + safety_margin;
-    }
-    else
+    }else if (z_abs < z_min)
     {
-        // Use fallback value if outside the beam pipe expansion region
-        rin = 3.45; // Default inner radius for vertex disks
+        beamPipeRadius = r_min;
+    }
+    else // z_abs > z_max
+    {
+        beamPipeRadius = r_max;
     }
 
-    // Keep outer radius unchanged
-    rout = default_rout;
+
+    // Verify that rin doesn't violate beam pipe constraints
+    Double_t minAllowedRadius = beamPipeRadius + safety_margin;
+    if (rin < minAllowedRadius) {
+        cout << "Warning: rin is smaller than beam pipe + safety margin at z = " << z
+             << ". Adjusting from " << rin << " to " << minAllowedRadius << " cm." << endl;
+        rin = minAllowedRadius;
+    }
+
+    // Set rout based on z position
+    if (z_abs < 40)  // Adjust condition if needed based on disk configuration
+        rout = rout_small;
+    else
+        rout = rout_large;		
 
     // Debugging output
     cout << "z = " << z << " cm, beamPipeRadius = " << beamPipeRadius
@@ -192,7 +211,7 @@ void SolGeom::SolGeoFill()
 	{
 		const Int_t NlVtx = 3;	// Assume 3 vertex pixel layers
 		Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };		// Vertex layer radii in cm
-		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in c
+		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in cm
 		for (Int_t i = 0; i < NlVtx; i++)
 		{
 			ftyLay[fNlay] = 1;					// Layer type 1 = R (barrel) or 2 = z (forward/backward)
@@ -383,14 +402,14 @@ void SolGeom::SolGeoFill()
 	{
 		const Int_t NlVtxd = 6;							// Assume 8 pixel disk layers
 		Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
-		Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
-		Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
-                //Double_t rinVtxd[NlVtxd], rotVtxd[NlVtxd];
+		//Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
+		//Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
+                Double_t rinVtxd[NlVtxd], rotVtxd[NlVtxd];
 
 		for (Int_t i = 0; i < NlVtxd; i++)
 		{
 
-		  //GetVertexDiskRadii(zVtxd[i], rinVtxd[i], rotVtxd[i]);
+		        GetVertexDiskRadii(zVtxd[i], rinVtxd[i], rotVtxd[i]);
 			ftyLay[fNlay] = 2;					// Layer type 1 = R (barrel) or 2 = z (forward/backward
 			fLyLabl[fNlay] = "VTXDSK";			// Layer label
 			fxMin[fNlay] = rinVtxd[i] * 1.e-2;	// Minimum dimension z for barrel  or R for forward
