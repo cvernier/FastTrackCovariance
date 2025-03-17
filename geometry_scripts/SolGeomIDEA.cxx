@@ -12,6 +12,47 @@
 
 using namespace std;
 
+
+void SolGeom::GetVertexDiskRadii(Double_t z, Double_t &rin, Double_t &rout)
+{
+    // Beam pipe expansion constraints
+    const Double_t z_min = 9.0;     // Start of beam pipe expansion (cm)
+    const Double_t z_max = 119.0;   // End of beam pipe expansion (cm)
+    const Double_t r_min = 1.17;    // Beam pipe radius at z_min (cm)
+    const Double_t r_max = 2.0;     // Beam pipe radius at z_max (cm)
+    
+    // Safety margin to ensure detector doesn't overlap with beam pipe
+    const Double_t safety_margin = 0.3; // 3 mm clearance from the beam pipe
+
+    // Default outer radius (can be adjusted if needed)
+    const Double_t default_rout = 31.5;
+
+    Double_t z_abs = TMath::Abs(z); // Consider symmetry in z
+    Double_t beamPipeRadius = 0.;
+    
+    if (z_abs >= z_min && z_abs <= z_max)
+    {
+        // Compute beam pipe radius using linear interpolation
+        Double_t beamPipeRadius = r_min + (r_max - r_min) * (z_abs - z_min) / (z_max - z_min);
+
+        // Set rinVtxd larger than beam pipe radius + safety margin
+        rin = beamPipeRadius + safety_margin;
+    }
+    else
+    {
+        // Use fallback value if outside the beam pipe expansion region
+        rin = 3.45; // Default inner radius for vertex disks
+    }
+
+    // Keep outer radius unchanged
+    rout = default_rout;
+
+    // Debugging output
+    cout << "z = " << z << " cm, beamPipeRadius = " << beamPipeRadius
+         << " cm, rinVtxd = " << rin << " cm, rotVtxd = " << rout << " cm" << endl;
+}
+
+
 SolGeom::SolGeom()
 {
 	SolGeoInit();
@@ -129,9 +170,12 @@ void SolGeom::SolGeoFill()
 	{
 		ftyLay[fNlay] = 1;			// Layer type 1 = R (barrel) or 2 = z (forward/backward)
 		fLyLabl[fNlay] = "PIPE";
-		fxMin[fNlay] = -100.;		// Minimum dimension z for barrel  or R for forward
-		fxMax[fNlay] = 100.;		// Maximum dimension z for barrel  or R for forward
-		frPos[fNlay] = 0.01;		// R/z location of layer
+		//fxMin[fNlay] = -100.;		// Minimum dimension z for barrel  or R for forward
+		//fxMax[fNlay] = 100.;		// Maximum dimension z for barrel  or R for forward
+		//frPos[fNlay] = 0.01;		// R/z location of layer
+		frPos[fNlay] = 0.0117;		// R/z location of layer ##LG
+		fxMin[fNlay] = -90.;		// Minimum dimension z for barrel  or R for forward ##LG
+		fxMax[fNlay] = 90.;		// Maximum dimension z for barrel  or R for forward ##LG
 		fthLay[fNlay] = 0.00235;		// Thickness (meters)
 		frlLay[fNlay] = 35.276e-2;	// Radiation length (meters)
 		fnmLay[fNlay] = 0;			// Number of measurements in layers (1D or 2D)
@@ -148,7 +192,7 @@ void SolGeom::SolGeoFill()
 	{
 		const Int_t NlVtx = 3;	// Assume 3 vertex pixel layers
 		Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };		// Vertex layer radii in cm
-		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in cm
+		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in c
 		for (Int_t i = 0; i < NlVtx; i++)
 		{
 			ftyLay[fNlay] = 1;					// Layer type 1 = R (barrel) or 2 = z (forward/backward)
@@ -341,8 +385,12 @@ void SolGeom::SolGeoFill()
 		Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
 		Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
 		Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
+                //Double_t rinVtxd[NlVtxd], rotVtxd[NlVtxd];
+
 		for (Int_t i = 0; i < NlVtxd; i++)
 		{
+
+		  //GetVertexDiskRadii(zVtxd[i], rinVtxd[i], rotVtxd[i]);
 			ftyLay[fNlay] = 2;					// Layer type 1 = R (barrel) or 2 = z (forward/backward
 			fLyLabl[fNlay] = "VTXDSK";			// Layer label
 			fxMin[fNlay] = rinVtxd[i] * 1.e-2;	// Minimum dimension z for barrel  or R for forward
