@@ -26,8 +26,11 @@ void SolGeom::GetVertexDiskRadii(Double_t z, Double_t &rin, Double_t &rout)
     const Double_t safety_margin = 0.3; // 3 mm clearance from the beam pipe
 
     // Outer radius options
-    const Double_t rout_large = 31.5; // in cm
-    const Double_t rout_small = 27.5; // in cm
+//    const Double_t rout_large = 31.5; // in cm  // for IDEA_Delphes baseline
+//    const Double_t rout_small = 27.5; // in cm  // for IDEA_Delphes baseline
+    const Double_t rout_large = 11.5; // in cm
+    const Double_t rout_small = 7.5; // in cm
+
 
     Double_t z_abs = TMath::Abs(z); // Consider symmetry in z
     Double_t beamPipeRadius = 0.;
@@ -210,8 +213,11 @@ void SolGeom::SolGeoFill()
 	if (fEnable[1])
 	{
 		const Int_t NlVtx = 3;	// Assume 3 vertex pixel layers
-		Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };		// Vertex layer radii in cm
-		Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in cm
+		//Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };		// Vertex layer radii in cm
+		//Double_t lVtx[NlVtx] = { 9.65, 16.09, 25.75 };		// Vertex layer half length in cm
+		Double_t rVtx[NlVtx] = { 1.37, 2.27, 3.4 };           // Vertex layer radii in cm
+		Double_t lVtx[NlVtx] = { 9.65, 9.65, 9.65 };                // Vertex layer half length in cm
+
 		for (Int_t i = 0; i < NlVtx; i++)
 		{
 			ftyLay[fNlay] = 1;					// Layer type 1 = R (barrel) or 2 = z (forward/backward)
@@ -401,10 +407,11 @@ void SolGeom::SolGeoFill()
 	if (fEnable[6])
 	{
 		const Int_t NlVtxd = 6;							// Assume 8 pixel disk layers
-		Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
+		//Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
 		//Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
 		//Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
                 Double_t rinVtxd[NlVtxd], rotVtxd[NlVtxd];
+		Double_t zVtxd[NlVtxd] = { -13.86, -10.91, -7.91, 7.91, 10.91, 13.86 };             // z location in cm
 
 		for (Int_t i = 0; i < NlVtxd; i++)
 		{
