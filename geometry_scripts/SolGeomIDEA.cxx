@@ -28,12 +28,18 @@ void SolGeom::GetVertexDiskRadii(Double_t z, Double_t &rin, Double_t &rout)
     // Outer radius options
 //    const Double_t rout_large = 31.5; // in cm  // for IDEA_Delphes baseline
 //    const Double_t rout_small = 27.5; // in cm  // for IDEA_Delphes baseline
-    const Double_t rout_large = 11.5; // in cm
-    const Double_t rout_small = 7.5; // in cm
+    Double_t rout_large = 11.5; // in cm
+    Double_t rout_small = 7.5; // in cm
 
 
     Double_t z_abs = TMath::Abs(z); // Consider symmetry in z
     Double_t beamPipeRadius = 0.;
+
+    if (z_abs > 25. ) {
+        rout_large = 31.5;
+        rout_small = 27.5;
+     }
+
 
      // Using the specified angle of 0.105 radians
     // rin = z * tan(angle)
@@ -406,12 +412,12 @@ void SolGeom::SolGeoFill()
 	// Vertex disks
 	if (fEnable[6])
 	{
-		const Int_t NlVtxd = 6;							// Assume 8 pixel disk layers
+		const Int_t NlVtxd = 12;							// Assume 8 pixel disk layers
 		//Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, 27.91, 60.91, 91.86 };		// z location in cm
 		//Double_t rinVtxd[NlVtxd] = { 10.5, 7.0, 3.45, 3.45, 7., 10.5 };      // Lower radius in cm
 		//Double_t rotVtxd[NlVtxd] = {31.5, 31.5, 27.5, 27.5, 31.5, 31.5};			// Outer radius in cm
                 Double_t rinVtxd[NlVtxd], rotVtxd[NlVtxd];
-		Double_t zVtxd[NlVtxd] = { -13.86, -10.91, -7.91, 7.91, 10.91, 13.86 };             // z location in cm
+		Double_t zVtxd[NlVtxd] = { -91.86, -60.91, -27.91, -13.86, -10.91, -7.91, 7.91, 10.91, 13.86, 27.91, 60.91, 91.86 };             // z location in cm
 
 		for (Int_t i = 0; i < NlVtxd; i++)
 		{
