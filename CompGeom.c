@@ -54,6 +54,7 @@ void CompGeom(Double_t Ang,
     TString filename_det1_track;
     filename_det1_track.Form("plot_dump/%s_geometry_track_%d.pdf", det_name1, iang);
     cnv_det1->SaveAs(filename_det1_track);
+    cc_det1->Close(); gSystem->ProcessEvents(); delete cc_det1; cc_det1 = 0; //Loukas
 
     //
     // Second detector geometry (e.g. CLD)
@@ -102,7 +103,8 @@ void CompGeom(Double_t Ang,
 	// Compare track parameter resolutions vs pt and theta *
 	//******************************************************
 	//
-	TCanvas *resol = new TCanvas("resol", "Comparison of resolutions", 100, 100, 500, 500);
+	//TCanvas *resol = new TCanvas("resol", "Comparison of resolutions", 100, 100, 500, 500);
+	TCanvas *resol = new TCanvas("resol", "Comparison of resolutions", 1500, 1500);
 	TString CnvTitle; 
 	CnvTitle.Form("Comparison of resolutions - Track angle %d deg.",iang);
 	resol->SetTitle(CnvTitle);
@@ -292,15 +294,15 @@ void CompGeom(Double_t Ang,
 	// Compare d0 resolution
 	resol->cd(2);
 	grd0_det1 = new TGraph(Npt, pp, sd0_det1);			// D resolution
-	grd0_det1->SetLineColor(kBlue);
-	grd0_det1->SetMarkerColor(kBlue);
+	grd0_det1->SetLineColor(kRed);
+	grd0_det1->SetMarkerColor(kRed);
 	grd0_det1->SetTitle("#sigma_{D_{0}} (#mum)");
 	grd0_det1->SetMinimum(0.0);
 	grd0_det1->GetXaxis()->SetTitle("p (GeV)");
 	grd0_det1->Draw("APL");
 	grd0_det2 = new TGraph(Npt, pp, sd0_det2);			// D resolution
-	grd0_det2->SetLineColor(kRed);
-	grd0_det2->SetMarkerColor(kRed);
+	grd0_det2->SetLineColor(kBlue);
+	grd0_det2->SetMarkerColor(kBlue);
 	grd0_det2->SetTitle("#sigma_{D_{0}} (#mum)");
 	grd0_det2->SetMinimum(0.0);
 	grd0_det2->GetXaxis()->SetTitle("p (GeV)");
@@ -330,15 +332,15 @@ void CompGeom(Double_t Ang,
 	resol->cd(3);
 	//IDEA
 	grz0_det1 = new TGraph(Npt, pp, sz0_det1);			// z0 resolution
-	grz0_det1->SetLineColor(kBlue);
-	grz0_det1->SetMarkerColor(kBlue);
+	grz0_det1->SetLineColor(kRed);
+	grz0_det1->SetMarkerColor(kRed);
 	grz0_det1->SetTitle("#sigma_{Z_{0}} (#mum)");
 	grz0_det1->GetXaxis()->SetTitle("p (GeV)");
 	grz0_det1->Draw("APL");
 	//CLD
 	grz0_det2 = new TGraph(Npt, pp, sz0_det2);			// z0 resolution
-	grz0_det2->SetLineColor(kRed);
-	grz0_det2->SetMarkerColor(kRed);
+	grz0_det2->SetLineColor(kBlue);
+	grz0_det2->SetMarkerColor(kBlue);
 	grz0_det2->SetTitle("#sigma_{Z_{0}} (#mum)");
 	grz0_det2->GetXaxis()->SetTitle("p (GeV)");
 	grz0_det2->Draw("SAME");			
@@ -364,16 +366,16 @@ void CompGeom(Double_t Ang,
 	// Compare theta resolution
 	//IDEA
 	grth_det1 = new TGraph(Npt, pp, sth_det1);			// theta resolution
-	grth_det1->SetLineColor(kBlue);
-	grth_det1->SetMarkerColor(kBlue);
+	grth_det1->SetLineColor(kRed);
+	grth_det1->SetMarkerColor(kRed);
 	grth_det1->SetTitle("#sigma_{#theta} (rad)");
 	grth_det1->SetMinimum(0.0);
 	grth_det1->GetXaxis()->SetTitle("p (GeV)");
 	grth_det1->Draw("APL");
 	//CLD
 	grth_det2 = new TGraph(Npt, pp, sth_det2);			// theta resolution
-	grth_det2->SetLineColor(kRed);
-	grth_det2->SetMarkerColor(kRed);
+	grth_det2->SetLineColor(kBlue);
+	grth_det2->SetMarkerColor(kBlue);
 	grth_det2->SetTitle("#sigma_{#theta} (rad)");
 	grth_det2->SetMinimum(0.0);
 	grth_det2->GetXaxis()->SetTitle("p (GeV)");
@@ -407,15 +409,15 @@ void CompGeom(Double_t Ang,
 	// Compare pt resolution
 	// CLD
 	resolp->cd(1); 
-	grpt_det2->SetMaximum(0.005);
-	grpt_det2->Draw("APL");
-	grptms_det2->Draw("SAME");
+	grpt_det1->SetMaximum(0.005);
+	grpt_det1->Draw("APL");
+	grptms_det1->Draw("SAME");
 	// SiD
+	grpt_det2->Draw("SAME");
+	grptms_det2->Draw("SAME");
+	// IDEA
 	grpt_det3->Draw("SAME");
 	grptms_det3->Draw("SAME");
-	// IDEA
-	grpt_det1->Draw("SAME");
-	grptms_det1->Draw("SAME");
 
 
 
