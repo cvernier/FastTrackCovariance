@@ -72,8 +72,9 @@ SolTrack::SolTrack(Double_t D, Double_t phi0, Double_t C, Double_t z0, Double_t 
 // Destructor
 SolTrack::~SolTrack()
 {
-	delete[] & fp;
-	delete[] & fpar;
+	// Never created using new
+	// delete[] & fp;
+	// delete[] & fpar;
 	fCov.Clear();
 }
 //
@@ -213,6 +214,15 @@ TGraph *SolTrack::TrkPlot()
 	gr->SetMarkerSize(1);
 	gr->SetLineColor(kMagenta);
 	//
+
+	delete[] zh;
+    delete[] rh;
+    delete[] ih;
+    delete[] dh;
+    delete[] hord;
+    delete[] z;
+    delete[] r;
+
 	return gr;
 }
 //
@@ -314,10 +324,14 @@ void SolTrack::CovCalc(Bool_t Res, Bool_t MS)
 		//
 		// Store momentum components for resolution correction cosines
 		//
-		Double_t *pRi = new Double_t[Nhit];
-		pRi[ii] = TMath::Abs(pxi * TMath::Cos(phi) + pyi * TMath::Sin(phi)); // Radial component
-		Double_t *pPhi = new Double_t[Nhit];
-		pPhi[ii] = TMath::Abs(pxi * TMath::Sin(phi) - pyi * TMath::Cos(phi)); // Phi component
+		// not used?
+		// Double_t *pRi = new Double_t[Nhit];
+		// pRi[ii] = TMath::Abs(pxi * TMath::Cos(phi) + pyi * TMath::Sin(phi)); // Radial component
+		// Double_t *pPhi = new Double_t[Nhit];
+		// pPhi[ii] = TMath::Abs(pxi * TMath::Sin(phi) - pyi * TMath::Cos(phi)); // Phi component
+		
+		// delete[] pRi;
+		// delete[] pPhi;
 	}
 	//
 	// Fill measurement covariance
@@ -513,6 +527,18 @@ void SolTrack::CovCalc(Bool_t Res, Bool_t MS)
 	// Invert and restore
 	Hnrm.Invert();
 	fCov = Hnrm.Similarity(DHinv);
+
+	delete[] zhh;
+    delete[] rhh;
+    delete[] dhh;
+    delete[] ihh;
+    delete[] hord;
+    delete[] zh;
+    delete[] rh;
+    delete[] ih;
+    delete[] thms;
+    delete[] cs;
+    delete[] mTl;
 }
 //
 // Force positive definitness in normalized matrix

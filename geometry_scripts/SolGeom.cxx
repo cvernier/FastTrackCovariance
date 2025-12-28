@@ -591,6 +591,7 @@ void SolGeom::GeoRead(char *fname, double B)
 	cout << "SolGeom::GeoRead completed with " << fNlay << " layers input" << " and magnetic field " << fB << " T" << endl;
 
 }
+
 //
 // Destructor
 SolGeom::~SolGeom()
@@ -599,19 +600,38 @@ SolGeom::~SolGeom()
 	fBlay = 0;
 	fNm = 0;
 
-	delete[] & ftyLay;
-	delete[] & fxMin;
-	delete[] & fxMax;
-	delete[] & frPos;
-	delete[] & fthLay;
-	delete[] & frlLay;
-	delete[] & fnmLay;
-	delete[] & fstLayU;
-	delete[] & fstLayL;
-	delete[] & fsgLayU;
-	delete[] & fsgLayL;
-	delete[] & fflLay;
-	delete[] & fEnable;
+	// Wrong
+	// delete[] & ftyLay;
+	// delete[] & fxMin;
+	// delete[] & fxMax;
+	// delete[] & frPos;
+	// delete[] & fthLay;
+	// delete[] & frlLay;
+	// delete[] & fnmLay;
+	// delete[] & fstLayU;
+	// delete[] & fstLayL;
+	// delete[] & fsgLayU;
+	// delete[] & fsgLayL;
+	// delete[] & fflLay;
+	// delete[] & fEnable;
+
+	delete[] ftyLay;
+    delete[] fLyLabl;
+    delete[] fxMin;
+    delete[] fxMax;
+    delete[] frPos;
+    delete[] fthLay;
+    delete[] frlLay;
+    delete[] fnmLay;
+    delete[] fstLayU;
+    delete[] fstLayL;
+    delete[] fsgLayU;
+    delete[] fsgLayL;
+    delete[] fflLay;
+    delete[] fEnable;
+
+	delete[] fDtype;
+	delete[] fDfstLay;
 }
 //
 // Draw the geometry (just a sketch)
